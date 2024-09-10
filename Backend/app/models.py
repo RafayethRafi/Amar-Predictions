@@ -23,7 +23,7 @@ class Review(Base):
     __tablename__ = "reviews"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    match_id = Column(Integer, nullable=False)
+    match_id = Column(String, nullable=False)
     content = Column(JSON, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))

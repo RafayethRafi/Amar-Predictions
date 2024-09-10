@@ -2,6 +2,8 @@ from pydantic import BaseModel,EmailStr
 from datetime import datetime
 from typing import Optional
 from pydantic.types import conint
+from fastapi import File, UploadFile
+import base64
 
 
 class Token(BaseModel):
@@ -31,3 +33,79 @@ class UserOut(UserBase):
     class Config:
         from_attributes = True
      
+
+
+class HeroImage(BaseModel):
+    pass
+    
+class HeroImageCreate(BaseModel):
+    altText: str
+    image: UploadFile
+
+class HeroImageOut(HeroImage):
+    id : int
+    active : bool
+    image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+
+    class Config:
+        from_attributes = True
+        
+class CricketBackgroundImage(BaseModel):
+    pass
+    
+class CricketBackgroundImageCreate(CricketBackgroundImage):
+    altText: str
+    image: UploadFile
+
+class CricketBackgroundImageOut(CricketBackgroundImage):
+    id : int
+    active : bool
+    image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+        
+class FootballBackgroundImage(BaseModel):
+    pass
+    
+class FootballBackgroundImageCreate(FootballBackgroundImage):
+    altText: str
+    image: UploadFile
+
+class FootballBackgroundImageOut(FootballBackgroundImage):
+    id : int
+    active : bool
+    image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+class Review(BaseModel):
+    pass
+    
+class ReviewCreate(Review):
+    match_id : str
+    content : dict
+
+class ReviewOut(Review):
+    id : int
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+        
+

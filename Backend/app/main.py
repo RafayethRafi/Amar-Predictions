@@ -5,7 +5,7 @@ from fastapi import FastAPI,Response,status,HTTPException,Depends
 
 from . import models,schemas,utils
 from .database import engine,SessionLocal,get_db
-from .routers import  user, auth
+from .routers import  user, auth,admin
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 models.Base.metadata.create_all(bind=engine)
@@ -33,6 +33,7 @@ app.add_middleware(
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(admin.router)
 
 
 @app.get("/")

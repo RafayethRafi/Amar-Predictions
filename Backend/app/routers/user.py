@@ -3,6 +3,8 @@ from fastapi import Response,status,HTTPException,Depends,APIRouter
 from sqlalchemy.orm import Session
 from ..database import get_db
 from typing import List
+import base64
+
 
 router = APIRouter(
     prefix= "/users",
@@ -44,3 +46,63 @@ def create_user(user:schemas.UserCreate, db: Session = Depends(get_db)):
 @router.get("/me", response_model=schemas.UserOut)
 def read_users_me(current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
     return current_user
+
+
+@router.get("/main_background_image", response_model=schemas.HeroImageOut)
+def get_main_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    hero_image = db.query(models.MainBackgroundImage).filter(models.MainBackgroundImage.active == True).first()
+    
+    if hero_image:
+        # Encode the image binary data to base64
+        image_base64 = base64.b64encode(hero_image.image).decode('utf-8')
+        
+        return schemas.HeroImageOut(
+            id=hero_image.id,
+            active=hero_image.active,
+            image=image_base64,  # Use the base64 encoded image
+            created_at=hero_image.created_at,
+            updated_at=hero_image.updated_at,
+            user=hero_image.user
+        )
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active main background image found")
+
+@router.get("/cricket_background_image",response_model=schemas.CricketBackgroundImageOut)
+def get_cricket_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    cricket_image = db.query(models.CricketBackgroundImage).filter(models.CricketBackgroundImage.active == True).first()
+    
+    if cricket_image:
+        # Encode the image binary data to base64
+        image_base64 = base64.b64encode(cricket_image.image).decode('utf-8')
+        
+        return schemas.CricketBackgroundImageOut(
+            id=cricket_image.id,
+            active=cricket_image.active,
+            image=image_base64,  # Use the base64 encoded image
+            created_at=cricket_image.created_at,
+            updated_at=cricket_image.updated_at,
+            user=cricket_image.user
+        )
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active cricket background image found")
+    
+    
+@router.get("/football_background_image",response_model=schemas.FootballBackgroundImageOut)
+def get_football_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    football_image = db.query(models.FootballBackgroundImage).filter(models.FootballBackgroundImage.active == True).first()
+
+    if football_image:
+        # Encode the image binary data to base64
+        image_base64 = base64.b64encode(football_image.image).decode('utf-8')
+        
+        return schemas.FootballBackgroundImageOut(
+            id=football_image.id,
+            active=football_image.active,
+            image=image_base64,  # Use the base64 encoded image
+            created_at=football_image.created_at,
+            updated_at=football_image.updated_at,
+            user=football_image.user
+        )
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active football background image found")
+    
