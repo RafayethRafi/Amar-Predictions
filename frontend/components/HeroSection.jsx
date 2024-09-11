@@ -6,10 +6,10 @@ export default function HeroSection({ image }) {
       return null; // Or you could return a placeholder image
     }
 
-    if (typeof image.image === 'string' && (image.image.startsWith('data:image') || image.image.startsWith('iVBORw0KGgoAAAANSUhEUgAA'))) {
+    if (typeof image.image === 'string' ) {
       return (
         <img 
-          src={image.image.startsWith('data:image') ? image.image : `data:image/png;base64,${image.image}`}
+          src={`data:image/png;base64,${image.image}`}
           alt={image.altText || "Hero image"}
           className="absolute inset-0 w-full h-full object-cover"
         />

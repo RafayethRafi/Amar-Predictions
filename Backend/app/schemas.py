@@ -45,7 +45,7 @@ class HeroImageCreate(BaseModel):
 class HeroImageOut(HeroImage):
     id : int
     active : bool
-    image : str
+    # image : str
     created_at : datetime
     updated_at : datetime
     user : UserOut
@@ -53,6 +53,21 @@ class HeroImageOut(HeroImage):
 
     class Config:
         from_attributes = True
+
+
+class HeroBackgroundImageDB(BaseModel):
+    id : int
+    active : bool
+    altText : str
+    image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+        
         
 class CricketBackgroundImage(BaseModel):
     pass
@@ -64,6 +79,19 @@ class CricketBackgroundImageCreate(CricketBackgroundImage):
 class CricketBackgroundImageOut(CricketBackgroundImage):
     id : int
     active : bool
+    # image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+
+class CricketBackgroundImageDB(BaseModel):
+    id : int
+    active : bool
+    altText : str
     image : str
     created_at : datetime
     updated_at : datetime
@@ -83,6 +111,19 @@ class FootballBackgroundImageCreate(FootballBackgroundImage):
 class FootballBackgroundImageOut(FootballBackgroundImage):
     id : int
     active : bool
+    # image : str
+    created_at : datetime
+    updated_at : datetime
+    user : UserOut
+    
+    class Config:
+        from_attributes = True
+        
+        
+class FootballBackgroundImageDB(BaseModel):
+    id : int
+    active : bool
+    altText : str
     image : str
     created_at : datetime
     updated_at : datetime
@@ -90,6 +131,7 @@ class FootballBackgroundImageOut(FootballBackgroundImage):
     
     class Config:
         from_attributes = True
+        
         
 class Review(BaseModel):
     pass

@@ -48,18 +48,19 @@ def read_users_me(current_user: schemas.UserOut = Depends(oauth2.get_current_use
     return current_user
 
 
-@router.get("/main_background_image", response_model=schemas.HeroImageOut)
+@router.get("/main_background_image", response_model=schemas.HeroBackgroundImageDB)
 def get_main_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
-    hero_image = db.query(models.MainBackgroundImage).filter(models.MainBackgroundImage.active == True).first()
+    hero_image = db.query(models.MainBackgroundImage).order_by(models.MainBackgroundImage.id.desc()).first()
     
     if hero_image:
         # Encode the image binary data to base64
         image_base64 = base64.b64encode(hero_image.image).decode('utf-8')
         
-        return schemas.HeroImageOut(
+        return schemas.HeroBackgroundImageDB(
             id=hero_image.id,
             active=hero_image.active,
             image=image_base64,  # Use the base64 encoded image
+            altText=hero_image.altText,
             created_at=hero_image.created_at,
             updated_at=hero_image.updated_at,
             user=hero_image.user
@@ -67,18 +68,19 @@ def get_main_background_image(db: Session = Depends(get_db), current_user: schem
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active main background image found")
 
-@router.get("/cricket_background_image",response_model=schemas.CricketBackgroundImageOut)
+@router.get("/cricket_background_image",response_model=schemas.CricketBackgroundImageDB)
 def get_cricket_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
-    cricket_image = db.query(models.CricketBackgroundImage).filter(models.CricketBackgroundImage.active == True).first()
+    cricket_image = db.query(models.CricketBackgroundImage).order_by(models.CricketBackgroundImage.id.desc()).first()
     
     if cricket_image:
         # Encode the image binary data to base64
         image_base64 = base64.b64encode(cricket_image.image).decode('utf-8')
         
-        return schemas.CricketBackgroundImageOut(
+        return schemas.CricketBackgroundImageDB(
             id=cricket_image.id,
             active=cricket_image.active,
             image=image_base64,  # Use the base64 encoded image
+            altText=cricket_image.altText,
             created_at=cricket_image.created_at,
             updated_at=cricket_image.updated_at,
             user=cricket_image.user
@@ -87,18 +89,19 @@ def get_cricket_background_image(db: Session = Depends(get_db), current_user: sc
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active cricket background image found")
     
     
-@router.get("/football_background_image",response_model=schemas.FootballBackgroundImageOut)
+@router.get("/football_background_image",response_model=schemas.FootballBackgroundImageDB)
 def get_football_background_image(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
-    football_image = db.query(models.FootballBackgroundImage).filter(models.FootballBackgroundImage.active == True).first()
+    football_image = db.query(models.FootballBackgroundImage).order_by(models.FootballBackgroundImage.id.desc()).first()
 
     if football_image:
         # Encode the image binary data to base64
         image_base64 = base64.b64encode(football_image.image).decode('utf-8')
         
-        return schemas.FootballBackgroundImageOut(
+        return schemas.FootballBackgroundImageDB(
             id=football_image.id,
             active=football_image.active,
             image=image_base64,  # Use the base64 encoded image
+            altText=football_image.altText,
             created_at=football_image.created_at,
             updated_at=football_image.updated_at,
             user=football_image.user

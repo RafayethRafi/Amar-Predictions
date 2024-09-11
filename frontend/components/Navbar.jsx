@@ -6,7 +6,7 @@ import useAuth from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  const { login, logout, authenticated } = useAuth();
+  const { login, logout, authenticated ,user} = useAuth();
   const router = useRouter();
 
   const handleLogin = () => {
@@ -31,6 +31,14 @@ const Navbar = () => {
               Home
             </Link>
           </li>
+
+          {authenticated && user.isAdmin && (
+            <li>
+              <Link href="/admin" className="text-white hover:text-gray-300">
+                Admin
+              </Link>
+            </li>
+          )}
           
           {!authenticated && (
             <div>

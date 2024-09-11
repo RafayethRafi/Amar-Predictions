@@ -32,6 +32,8 @@ export default function HomePage() {
         ]);
 
         console.log('Hero Response:', heroRes);
+
+        console.log('Hero Response:', heroRes);
         console.log('Cricket Response:', cricketRes);
         console.log('Football Response:', footballRes);
 

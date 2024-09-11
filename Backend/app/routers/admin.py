@@ -44,7 +44,7 @@ async def hero_image_update(
 
 @router.post("/cricket_image_update", status_code=status.HTTP_201_CREATED, response_model=schemas.CricketBackgroundImageOut)
 async def cricket_image_update(
-    altText: str,
+    altText: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: schemas.UserOut = Depends(oauth2.get_current_user)
@@ -74,7 +74,7 @@ async def cricket_image_update(
 
 @router.post("/football_image_update", status_code=status.HTTP_201_CREATED, response_model=schemas.FootballBackgroundImageOut)
 async def football_image_update(
-    altText: str,
+    altText: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: schemas.UserOut = Depends(oauth2.get_current_user)
