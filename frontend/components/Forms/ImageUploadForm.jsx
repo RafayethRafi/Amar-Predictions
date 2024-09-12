@@ -2,14 +2,20 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { UploadCloud } from "lucide-react";
 
-const ImageUploadForm = ({ title, endpoint, token }) => {
+const ImageUploadForm = ({ endpoint, token }) => {
   const [altText, setAltText] = useState('');
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('altText', altText);
     formData.append('image', image);
@@ -27,37 +33,60 @@ const ImageUploadForm = ({ title, endpoint, token }) => {
     } catch (error) {
       setMessage('Error uploading image. Please try again.');
       console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-lg text-black">
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
-      <div className="mb-4">
-        <label htmlFor="altText" className="block text-gray-700 font-bold mb-2">Alt Text:</label>
-        <input
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="altText" className="block text-sm font-medium text-gray-700 mb-1">
+          Alt Text:
+        </label>
+        <Input
           type="text"
           id="altText"
           value={altText}
           onChange={(e) => setAltText(e.target.value)}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image:</label>
-        <input
+      <div>
+        <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+          Image:
+        </label>
+        <Input
           type="file"
           id="image"
           onChange={(e) => setImage(e.target.files[0])}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full"
           required
         />
       </div>
-      <button type="submit" className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
-        Upload Image
-      </button>
-      {message && <p className="mt-4 text-center font-semibold">{message}</p>}
+      <Button 
+        type="submit" 
+        className="w-full"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="flex items-center justify-center">
+            <UploadCloud className="mr-2 h-4 w-4 animate-spin" />
+            Uploading...
+          </span>
+        ) : (
+          <span className="flex items-center justify-center">
+            <UploadCloud className="mr-2 h-4 w-4" />
+            Upload Image
+          </span>
+        )}
+      </Button>
+      {message && (
+        <Alert variant={message.includes('successfully') ? 'default' : 'destructive'}>
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+      )}
     </form>
   );
 };
