@@ -109,3 +109,9 @@ def get_football_background_image(db: Session = Depends(get_db), current_user: s
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active football background image found")
     
+    
+@router.get("/reviews",response_model=List[schemas.ReviewOut])
+async def get_reviews(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    reviews = db.query(models.Review).all()
+    return reviews
+

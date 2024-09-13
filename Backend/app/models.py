@@ -24,7 +24,7 @@ class Review(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     match_id = Column(String, nullable=False)
-    content = Column(JSON, nullable=False)
+    content = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)

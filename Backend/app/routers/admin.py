@@ -102,22 +102,20 @@ async def football_image_update(
     return new_football_image
 
 
-
-@router.post("post_review", status_code=status.HTTP_201_CREATED, response_model=schemas.ReviewOut)
+@router.post("/post_review", status_code=status.HTTP_201_CREATED, response_model=schemas.ReviewOut)
 async def post_review(
-    match_id: str,
-    content: dict,
+    review_data: schemas.ReviewCreate,  # Accept HTML content as a string
     db: Session = Depends(get_db),
     current_user: schemas.UserOut = Depends(oauth2.get_current_user)
 ):
-    # Create a new Review instance
+    # Create a new Review instance using data from the request body
     new_review = models.Review(
-        match_id=match_id,
-        content=content.dict(),
+        match_id=review_data.match_id,
+        content=review_data.content,  # Store the raw HTML content
         user_id=current_user.id
     )
 
-    # Add to database
+    # Add to the database
     db.add(new_review)
     db.commit()
     db.refresh(new_review)

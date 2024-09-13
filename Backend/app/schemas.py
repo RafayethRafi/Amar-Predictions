@@ -138,10 +138,12 @@ class Review(BaseModel):
     
 class ReviewCreate(Review):
     match_id : str
-    content : dict
+    content : str
 
 class ReviewOut(Review):
     id : int
+    match_id : str
+    content : str
     created_at : datetime
     updated_at : datetime
     user : UserOut
